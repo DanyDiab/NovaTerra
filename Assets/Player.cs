@@ -13,6 +13,8 @@ public class Player : MonoBehaviour{
     public int hp;
     public int totalHp;
     private bool canShoot;
+    public bool directionLocked;
+    public bool shootLocked;
 
         void Start(){
         gameObject.name = "player";
@@ -29,20 +31,24 @@ public class Player : MonoBehaviour{
         shoot();
     }
     void move(){
-        float moveHorizontal = Input.GetAxisRaw("Horizontal");
-        float moveVertical = Input.GetAxisRaw("Vertical");
-        moveInput = new Vector2(moveHorizontal, moveVertical).normalized;
-        transform.Translate(moveInput * speed * Time.deltaTime);
+        if(!directionLocked){
+            float moveHorizontal = Input.GetAxisRaw("Horizontal");
+            float moveVertical = Input.GetAxisRaw("Vertical");
+            moveInput = new Vector2(moveHorizontal, moveVertical).normalized;
+            transform.Translate(moveInput * speed * Time.deltaTime);
+        }
     }
     void shoot(){
-        if(Input.GetMouseButton(0) && canShoot){
-            Instantiate(projectile,transform.position, transform.rotation);
-            canShoot = false;
-            projectile.shotTag = "player";
-        }
-        else{
-            if(shootCH.Cooldown(shootCD)){
-                canShoot = true;
+        if(!shootLocked){
+            if(Input.GetMouseButton(0) && canShoot){
+                Instantiate(projectile,transform.position, transform.rotation);
+                canShoot = false;
+                projectile.shotTag = "player";
+            }
+            else{
+                if(shootCH.Cooldown(shootCD)){
+                    canShoot = true;
+                }
             }
         }
     }
