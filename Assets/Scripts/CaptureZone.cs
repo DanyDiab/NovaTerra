@@ -56,6 +56,7 @@ public class CaptureZone : MonoBehaviour
                     isComplete = true;
                     increaseProgress = false;
                     gameLogic.isCaptured = true;
+                    Destroy(gameObject);
                 }
             }
         }
