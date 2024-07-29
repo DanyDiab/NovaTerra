@@ -30,10 +30,9 @@ public class CaptureZone : MonoBehaviour
     {
         if(!isComplete){
             changeState();
-            determineChangeAmount();
             changeProgress();
-            disableMoveShoot();
         }
+        disableMoveShoot();
     }
     private bool isPlayerInZone(){
         if(MathHandler.calculateDistanceBetween2Vectors(player.transform.position, transform.position) < captureSize){
@@ -55,6 +54,7 @@ public class CaptureZone : MonoBehaviour
                 }
                 if(currProgress == 100){
                     isComplete = true;
+                    increaseProgress = false;
                     gameLogic.isCaptured = true;
                 }
             }
@@ -78,6 +78,7 @@ public class CaptureZone : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.F)){
             if(isPlayerInZone()){
                 increaseProgress = !increaseProgress;
+                determineChangeAmount();
             }
         }
     }
@@ -90,12 +91,6 @@ public class CaptureZone : MonoBehaviour
             player.directionLocked = false;
             player.shootLocked = false;
         }
-    }
-
-    
-    void OnDrawGizmosSelected(){
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, captureSize);
     }
 void UpdateCaptureAreaVisual()
     {
