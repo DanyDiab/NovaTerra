@@ -18,6 +18,9 @@ public class GameLogic : MonoBehaviour
     public float spawnRateIncrease;
     public int numToSpawn;
     public bool isCaptured;
+    public bool killedEnemies;
+    public NexusGateway nexusGateway;
+    public Vector2 randPos;
 
     
     // Start is called before the first frame update
@@ -32,17 +35,27 @@ public class GameLogic : MonoBehaviour
         botRandBound = 1;
         topRandBound = 3;
         currentSpawnInterval = initialSpawnInterval;
-        Vector2 pos = MathHandler.getRandPos(-100,100,-100,100);
-        Instantiate(captureZone, pos, transform.rotation);
-        // StartCoroutine(spawnEnemyOnIntervals());     
+        randPos = MathHandler.getRandPos(-100,100,-100,100);
+        Instantiate(captureZone, randPos, transform.rotation);
+        StartCoroutine(spawnEnemyOnIntervals());
+        getPlayerReference();   
         // StartCoroutine(decreaseSpawnInterval());   
     }
+    void Update(){
+        if(isCaptured){
+            // put all functions that only need to be run once here
+            if(!killedEnemies){
+                killAllEnemiesOnCapture();
+                Instantiate(nexusGateway, randPos, transform.rotation);
+            }
+        }
+    }
     IEnumerator spawnEnemyOnIntervals(){
-        while(!captureZone.isComplete){
+        while(!isCaptured){
             yield return new WaitForSeconds(currentSpawnInterval);
             numToSpawn = calculateNumEnemiesToSpawn();
             spawnEnemies();
-            determineIncreaseNeeded();
+            // determineIncreaseNeeded();
         }
     }
     IEnumerator decreaseSpawnInterval(){
@@ -56,12 +69,26 @@ public class GameLogic : MonoBehaviour
     }
 
     public void spawnEnemies(){
-        for(int i = 0; i < numToSpawn; i++){
-            Vector2 pos = MathHandler.getRandPos(player.transform.position.x - player.transform.position.x/2, player.transform.position.x + player.transform.position.x/2, 
+        if(!isCaptured){
+            // checking if it outpost is captured here because the other check only prevents future waves
+            // doesnt stop the next one from spawning because it already got into the while statement
+            for(int i = 0; i < numToSpawn; i++){
+                if(player == null){
+                    getPlayerReference();
+                }
+                Vector2 pos = MathHandler.getRandPos(player.transform.position.x - player.transform.position.x/2, player.transform.position.x + player.transform.position.x/2, 
                 player.transform.position.y - player.transform.position.y/2,player.transform.position.y + player.transform.position.y/2);
-            Instantiate(bigMouth, pos, transform.rotation);
-            numEnemiesAlive++;
+                Instantiate(bigMouth, pos, transform.rotation);
+                numEnemiesAlive++;
+            }
         }
+    }
+    public void killAllEnemiesOnCapture(){
+        Enemy[] enemies = FindObjectsOfType<Enemy>();
+        for(int i = 0;i < numEnemiesAlive; i++){
+            Destroy(enemies[i].gameObject);
+        }
+        killedEnemies = true;
     }
 
     private int calculateNumEnemiesToSpawn(){
@@ -77,6 +104,11 @@ public class GameLogic : MonoBehaviour
         int increaseBounds = Random.Range(0, 100);
         if(increaseBounds <= chanceToIncreaseBounds){
             increaseRandBounds();
+        }
+    }
+    void getPlayerReference(){
+        if(player == null){
+            player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         }
     }
 }

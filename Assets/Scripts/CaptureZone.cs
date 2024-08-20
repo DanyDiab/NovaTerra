@@ -4,9 +4,8 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class CaptureZone : MonoBehaviour
+public class CaptureZone : Interactable
 {
-    public Player player;
     public CooldownHandler zoneCH;
     public GameLogic gameLogic;
     public int changeInterval;
@@ -28,19 +27,12 @@ public class CaptureZone : MonoBehaviour
     }
     void Update()
     {
-        if(!isComplete){
-            changeState();
-            changeProgress();
-        }
-        disableMoveShoot();
-    }
-    private bool isPlayerInZone(){
-        if(MathHandler.calculateDistanceBetween2Vectors(player.transform.position, transform.position) < captureSize){
-            return true;
-        }
-        else{
-            return false;
-        }
+        base.Update();
+        // if(playerInRange){
+        //     checkInput();
+        // }
+        determineChangeAmount();
+        changeProgress();
     }
     private void changeProgress(){
         if(currProgress < 100){
@@ -56,15 +48,18 @@ public class CaptureZone : MonoBehaviour
                     isComplete = true;
                     increaseProgress = false;
                     gameLogic.isCaptured = true;
+                    base.interact();
                     Destroy(gameObject);
                 }
             }
         }
     }
     private void determineChangeAmount(){
-        if(increaseProgress){
+        if(interacted){
             changeAmount = 1;
-            changeInterval = 300;
+            changeInterval = 150;
+            player.directionLocked = true;
+            player.shootLocked = true;
         }
         else if (currProgress > 0){
             changeAmount = -1;
@@ -73,32 +68,17 @@ public class CaptureZone : MonoBehaviour
         else{
             changeAmount = 0;
             changeInterval = 0;
-        }
-    }
-    private void changeState(){
-        if(Input.GetKeyDown(KeyCode.F)){
-            if(isPlayerInZone()){
-                increaseProgress = !increaseProgress;
-                determineChangeAmount();
-            }
-        }
-    }
-    private void disableMoveShoot(){
-        if(increaseProgress){
-            player.directionLocked = true;
-            player.shootLocked = true;
-        }
-        else{
             player.directionLocked = false;
             player.shootLocked = false;
         }
     }
+
+
 void UpdateCaptureAreaVisual()
     {
         // Set the scale of the sprite to match the capture area size
         transform.localScale = new Vector3(captureSize * 2, captureSize * 2, 1);
-    }
-    
+    }  
 }
 
 

@@ -192,6 +192,9 @@ MonoBehaviour:
   spawnRateIncrease: 0
   numToSpawn: 0
   isCaptured: 0
+  killedEnemies: 0
+  nexusGateway: {fileID: 8161886774137440924, guid: 8a83c53872eaf8d44ad08ac2c1be1842, type: 3}
+  randPos: {x: 0, y: 0}
 --- !u!4 &1206204015
 Transform:
   m_ObjectHideFlags: 0

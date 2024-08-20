@@ -15,6 +15,7 @@ public class Player : MonoBehaviour{
     private bool canShoot;
     public bool directionLocked;
     public bool shootLocked;
+    public static Player player;
 
         void Start(){
         gameObject.name = "player";
@@ -24,11 +25,23 @@ public class Player : MonoBehaviour{
         shootCD = 1000;
         hp = 100;
         totalHp = hp;
+        directionLocked = false;
+        shootLocked = false;
+
     }
 
     void Update(){
         move();
         shoot();
+    }
+    void Awake(){
+        if(player != null){
+            Destroy(gameObject);
+            return;
+        }
+        player = this;
+        DontDestroyOnLoad(gameObject);
+
     }
     void move(){
         if(!directionLocked){
@@ -45,7 +58,7 @@ public class Player : MonoBehaviour{
                 canShoot = false;
                 projectile.shotTag = "player";
             }
-            else{
+            else if(!canShoot){
                 if(shootCH.Cooldown(shootCD)){
                     canShoot = true;
                 }

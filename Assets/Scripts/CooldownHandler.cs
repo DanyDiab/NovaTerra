@@ -5,6 +5,9 @@ using UnityEngine;
 public class CooldownHandler : MonoBehaviour{
     private float timer;
     private float cdSecs;
+    public static CooldownHandler instance;
+    
+  
     public bool Cooldown(int cdInMs){
         cdSecs = msToSecs(cdInMs);
         timer += Time.deltaTime;

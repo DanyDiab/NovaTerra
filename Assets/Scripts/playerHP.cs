@@ -9,11 +9,20 @@ public class playerHP : MonoBehaviour
     public int totalHp;
     public int currHp;
     public Player player;
+    public static playerHP instance;
 
     // Update is called once per frame
     void Start(){
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
+     void Awake(){
+        if(instance != null){
+            Destroy(gameObject);
+            return;
+        }
+        instance = this;
+        DontDestroyOnLoad(gameObject);
+    }  
     void Update()
     {
         currHp = player.hp;

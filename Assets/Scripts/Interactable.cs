@@ -4,32 +4,26 @@ using UnityEngine;
 
 public class Interactable : MonoBehaviour
 {
-    public bool isBeingInteracted;
+    public bool interacted;
     public bool openMenu;
     public bool playerInRange;
-    public GameObject menuPanel;
     public Player player;
 
     // Start is called before the first frame update
     void Start(){
-        isBeingInteracted = false;
-        openMenu = false;
+        interacted = false;
         playerInRange = false;
-        menuPanel.SetActive(openMenu);
+        getPlayerReference();
     }
-    void Update(){
+    public void Update(){
         if(playerInRange){
             checkInput();
         }
     }
-    void interact(){
-        isBeingInteracted = !isBeingInteracted;
-        openMenu = !openMenu;
-        menuPanel.SetActive(openMenu);
-        player.directionLocked = !player.directionLocked;
-        player.shootLocked = !player.shootLocked;
+    public void interact(){
+        interacted = !interacted;
     }
-    void checkInput(){
+    void checkInput(){   
         if(Input.GetKeyDown(KeyCode.F)){
             interact();
         }
@@ -44,6 +38,11 @@ public class Interactable : MonoBehaviour
     void OnTriggerExit2D(Collider2D other){
         if(other.CompareTag("Player")){
             playerInRange = false;
+        }
+    }
+        void getPlayerReference(){
+        if(player == null){
+            player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         }
     }
 }

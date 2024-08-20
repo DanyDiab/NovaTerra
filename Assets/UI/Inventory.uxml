@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/Stylesheets/Inventory.uss?fileID=7433441132597879392&amp;guid=88502d0505a534d4fb6c2344c3beadc1&amp;type=3#Inventory" />
+    <ui:VisualElement name="Container" class="Container" style="flex-grow: 1; align-items: center; justify-content: center;">
+        <ui:VisualElement name="Inventory" class="Inventory" style="flex-grow: 1; flex-basis: auto; flex-shrink: 0; width: 75%; height: 75%; max-width: 75%; max-height: 75%; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; background-color: rgba(32, 31, 41, 0.76); border-top-color: rgb(0, 0, 0); border-top-width: 5px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-right-width: 5px; border-bottom-width: 5px; border-left-width: 5px;">
+            <ui:Label tabindex="-1" text="Rune Matrix" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Header" class="Header" style="font-size: 24px; color: rgb(180, 27, 205); margin-bottom: 10px; border-bottom-color: rgba(64, 74, 82, 0); border-bottom-width: 1px; margin-top: 0; margin-right: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; background-color: rgba(0, 0, 0, 0.68); align-items: auto; justify-content: flex-start; align-self: auto; -unity-text-align: upper-center;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
